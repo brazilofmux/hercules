@@ -8,7 +8,7 @@ RUN apt-get update \
  && wget -O regina-rexx-3.9.3.tar.gz https://sourceforge.net/projects/regina-rexx/files/regina-rexx/3.9.3/regina-rexx-3.9.3.tar.gz/download \
  && tar xzf regina-rexx-3.9.3.tar.gz \
  && rm regina-rexx-3.9.3.tar.gz \
- && (cd regina-rexx-3.9.3;./configure;make;make install) \
+ && (cd regina-rexx-3.9.3;./configure;make -j12;make install) \
  && rm -rf regina-rexx-3.9.3 \
  && git clone --depth 1 https://github.com/hercules-390/hyperion.git hyperion \
  && (cd hyperion;mkdir build;cd build;cmake ..;cmake --build .;ctest;cmake -P cmake_install.cmake) \

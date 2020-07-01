@@ -5,10 +5,10 @@ RUN apt-get update \
  && wget -O regina-rexx-3.9.3.tar.gz https://sourceforge.net/projects/regina-rexx/files/regina-rexx/3.9.3/regina-rexx-3.9.3.tar.gz/download \
  && tar xzf regina-rexx-3.9.3.tar.gz \
  && rm regina-rexx-3.9.3.tar.gz \
- && (cd regina-rexx-3.9.3;./configure;make;make install) \
+ && (cd regina-rexx-3.9.3;./configure;make -j12;make install) \
  && rm -rf regina-rexx-3.9.3 \
  && git clone --depth 1 https://github.com/rbowler/spinhawk.git spinhawk \
- && (cd spinhawk;chmod u+x autogen.sh;./autogen.sh;./configure --enable-ltdl-install --enable-cckd-bzip2 --enable-het-bzip2 --enable-optimization=yes --enable-multi-cpu=yes --enable-interlocked-access-facility-2=yes;make;make check;make install) \
+ && (cd spinhawk;chmod u+x autogen.sh;./autogen.sh;./configure --enable-ltdl-install --enable-cckd-bzip2 --enable-het-bzip2 --enable-optimization=yes --enable-multi-cpu=yes --enable-interlocked-access-facility-2=yes;make -j12;make check;make install) \
  && rm -rf spinhawk \
  && apt-get purge -y git wget gcc g++ make autoconf automake gawk m4 zlib1g-dev libbz2-dev \
  && apt-get autoremove -y \
