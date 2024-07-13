@@ -1,4 +1,4 @@
-FROM debian:stable-slim as builder
+FROM debian:stable-slim AS builder
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends ca-certificates git wget gcc g++ make autoconf automake gawk m4 zlib1g-dev libbz2-dev \
