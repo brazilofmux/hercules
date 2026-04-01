@@ -11,6 +11,7 @@ RUN apt-get update \
 # Build extpkgs (crypto/decNumber/SoftFloat/telnet) from source.
 # Extpkg CMake parses the build dir name as <name><bits>.<type>,
 # e.g. crypto64.Release. Must be out-of-source.
+# SDL configure looks for libs in lib/<arch> on non-x86; symlink to lib/.
 RUN mkdir -p /tmp/extpkgs /tmp/extpkgs-work \
  && for pkg in crypto decNumber SoftFloat telnet; do \
         git clone --depth 1 https://github.com/SDL-Hercules-390/${pkg}.git /tmp/extpkgs-work/${pkg} \
@@ -19,7 +20,12 @@ RUN mkdir -p /tmp/extpkgs /tmp/extpkgs-work \
          && cmake /tmp/extpkgs-work/${pkg} -DINSTALL_PREFIX=/tmp/extpkgs \
          && make -j$(nproc) \
          && make install); \
-    done
+    done \
+ && MACHINE=$(uname -m) \
+ && if [ "$MACHINE" != "x86_64" ]; then \
+        mkdir -p /tmp/extpkgs/lib/$MACHINE \
+     && cp /tmp/extpkgs/lib/*.a /tmp/extpkgs/lib/$MACHINE/; \
+    fi
 
 RUN git clone --depth 1 https://github.com/SDL-Hercules-390/hyperion.git sdl \
  && cd sdl \
