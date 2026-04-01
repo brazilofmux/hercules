@@ -9,13 +9,13 @@ RUN apt-get update \
  && rm -rf regina-rexx-3.9.7
 
 # Build extpkgs (crypto/decNumber/SoftFloat/telnet) from source.
-# Build dir must be named exactly "Release" (CMake parses dir name)
-# and must be out-of-source (not inside the source tree).
+# Extpkg CMake parses the build dir name as <name><bits>.<type>,
+# e.g. crypto64.Release. Must be out-of-source.
 RUN mkdir -p /tmp/extpkgs /tmp/extpkgs-work \
  && for pkg in crypto decNumber SoftFloat telnet; do \
         git clone --depth 1 https://github.com/SDL-Hercules-390/${pkg}.git /tmp/extpkgs-work/${pkg} \
-     && mkdir -p /tmp/extpkgs-work/${pkg}-build/Release \
-     && (cd /tmp/extpkgs-work/${pkg}-build/Release \
+     && mkdir -p /tmp/extpkgs-work/${pkg}64.Release \
+     && (cd /tmp/extpkgs-work/${pkg}64.Release \
          && cmake /tmp/extpkgs-work/${pkg} -DINSTALL_PREFIX=/tmp/extpkgs \
          && make -j$(nproc) \
          && make install); \
