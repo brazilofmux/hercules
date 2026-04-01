@@ -6,11 +6,11 @@ COPY html.patch .
 RUN apt-get update \
  && apt-get install -y --no-install-recommends ca-certificates wget cmake git gcc libc6-dev sed make patch \
  && rm -rf /var/lib/apt/lists/* \
- && wget -O regina-rexx-3.9.4.tar.gz https://sourceforge.net/projects/regina-rexx/files/regina-rexx/3.9.4/regina-rexx-3.9.4.tar.gz/download \
- && tar xzf regina-rexx-3.9.4.tar.gz \
- && rm regina-rexx-3.9.4.tar.gz \
- && (cd regina-rexx-3.9.4;./configure;make -j12;make install) \
- && rm -rf regina-rexx-3.9.4 \
+ && wget -O regina-rexx-3.9.7.tar.gz https://sourceforge.net/projects/regina-rexx/files/regina-rexx/3.9.7/regina-rexx-3.9.7.tar.gz/download \
+ && tar xzf regina-rexx-3.9.7.tar.gz \
+ && rm regina-rexx-3.9.7.tar.gz \
+ && (cd regina-rexx-3.9.7;./configure;make -j$(nproc);make install) \
+ && rm -rf regina-rexx-3.9.7 \
  && git clone --depth 1 https://github.com/hercules-390/hyperion.git hyperion \
  && (cd hyperion;patch -p0 < ../html.patch;mkdir build;cd build;cmake ..;cmake --build .;ctest;cmake -P cmake_install.cmake) \
  && rm -rf hyperion

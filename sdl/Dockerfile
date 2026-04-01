@@ -2,13 +2,13 @@ FROM debian:stable-slim AS builder
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends ca-certificates git wget gcc g++ make autoconf automake flex gawk m4 zlib1g-dev libbz2-dev libtool libtool-bin libltdl-dev \
- && wget -O regina-rexx-3.9.4.tar.gz https://sourceforge.net/projects/regina-rexx/files/regina-rexx/3.9.4/regina-rexx-3.9.4.tar.gz/download \
- && tar xzf regina-rexx-3.9.4.tar.gz \
- && rm regina-rexx-3.9.4.tar.gz \
- && (cd regina-rexx-3.9.4;./configure;make -j12;make install) \
- && rm -rf regina-rexx-3.9.4 \
+ && wget -O regina-rexx-3.9.7.tar.gz https://sourceforge.net/projects/regina-rexx/files/regina-rexx/3.9.7/regina-rexx-3.9.7.tar.gz/download \
+ && tar xzf regina-rexx-3.9.7.tar.gz \
+ && rm regina-rexx-3.9.7.tar.gz \
+ && (cd regina-rexx-3.9.7;./configure;make -j$(nproc);make install) \
+ && rm -rf regina-rexx-3.9.7 \
  && git clone --depth 1 https://github.com/SDL-Hercules-390/hyperion.git sdl \
- && (cd sdl;./configure --enable-regina-rexx --enable-cckd-bzip2 --enable-het-bzip2 --enable-optimization=yes;make -j12;make install) \
+ && (cd sdl;./configure --enable-regina-rexx --enable-cckd-bzip2 --enable-het-bzip2 --enable-optimization=yes;make -j$(nproc);make install) \
  && rm -rf sdl \
  && apt-get purge -y git wget gcc g++ make autoconf automake flex m4 \
  && apt-get autoremove -y \
