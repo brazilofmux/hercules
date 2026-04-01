@@ -10,14 +10,13 @@ RUN apt-get update \
 
 # Build extpkgs (crypto/decNumber/SoftFloat/telnet) from source.
 RUN mkdir -p /tmp/extpkgs /tmp/extpkgs-work \
- && cd /tmp/extpkgs-work \
  && for pkg in crypto decNumber SoftFloat telnet; do \
-        git clone --depth 1 https://github.com/SDL-Hercules-390/${pkg}.git \
-     && mkdir ${pkg}-build && cd ${pkg}-build \
-     && cmake ../${pkg} -DINSTALL_PREFIX=/tmp/extpkgs \
-     && make -j$(nproc) \
-     && make install \
-     && cd /tmp/extpkgs-work; \
+        git clone --depth 1 https://github.com/SDL-Hercules-390/${pkg}.git /tmp/extpkgs-work/${pkg} \
+     && mkdir /tmp/extpkgs-work/${pkg}-build \
+     && (cd /tmp/extpkgs-work/${pkg}-build \
+         && cmake /tmp/extpkgs-work/${pkg} -DINSTALL_PREFIX=/tmp/extpkgs \
+         && make -j$(nproc) \
+         && make install); \
     done
 
 RUN git clone --depth 1 https://github.com/SDL-Hercules-390/hyperion.git sdl \
