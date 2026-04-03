@@ -29,7 +29,13 @@ RUN mkdir -p /tmp/extpkgs /tmp/extpkgs-work \
 
 RUN git clone --depth 1 https://github.com/SDL-Hercules-390/hyperion.git sdl \
  && cd sdl \
- && ./configure --enable-extpkgs=/tmp/extpkgs --enable-regina-rexx --enable-cckd-bzip2 --enable-het-bzip2 --enable-optimization=yes CFLAGS="-march=x86-64-v2" CXXFLAGS="-march=x86-64-v2" \
+ && MACHINE=$(uname -m) \
+ && if [ "$MACHINE" = "x86_64" ]; then \
+        ARCH_FLAGS='CFLAGS=-march=x86-64-v2 CXXFLAGS=-march=x86-64-v2'; \
+    else \
+        ARCH_FLAGS=''; \
+    fi \
+ && ./configure --enable-extpkgs=/tmp/extpkgs --enable-regina-rexx --enable-cckd-bzip2 --enable-het-bzip2 --enable-optimization=yes $ARCH_FLAGS \
  && make -j$(nproc) \
  && make install \
  && rm -rf /sdl /tmp/extpkgs /tmp/extpkgs-work \
