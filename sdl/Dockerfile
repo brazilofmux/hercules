@@ -2,7 +2,7 @@ FROM debian:stable-slim AS builder
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends ca-certificates git wget gcc g++ make cmake autoconf automake flex gawk m4 zlib1g-dev libbz2-dev libtool libtool-bin libltdl-dev \
- && wget -O regina-rexx-3.9.7.tar.gz https://sourceforge.net/projects/regina-rexx/files/regina-rexx/3.9.7/regina-rexx-3.9.7.tar.gz/download \
+ && wget --tries=5 --retry-on-http-error=502,503,504 --waitretry=10 -O regina-rexx-3.9.7.tar.gz https://sourceforge.net/projects/regina-rexx/files/regina-rexx/3.9.7/regina-rexx-3.9.7.tar.gz/download \
  && tar xzf regina-rexx-3.9.7.tar.gz \
  && rm regina-rexx-3.9.7.tar.gz \
  && (cd regina-rexx-3.9.7;./configure;make -j$(nproc);make install) \
