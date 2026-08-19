@@ -29,6 +29,7 @@ Runs performed 2026-08-19. Method summary (full narrative in
 | `asmfc-icount.txt` | HERCASM: 3-step Assembler XF (IFOX00/ASMFC) job, 5,600 generated statements per step, all clean | 87,947,689 (116 distinct opcodes) |
 | `cobol-icount.txt` | CPUMIX: COBOL (COBUCLG) compile-link-go; GO = 10M iterations of a packed-decimal COMP-3 paragraph | 379,852,458 (115 distinct opcodes) |
 | `idle-icount.txt` | 60 s of idle IPL'd TK5 (no jobs) | 6,229,656 (97 distinct opcodes) |
+| `batch-icount.txt` | BATCH: a real production month-end general-ledger run — 37 steps: 16 SORTs + 19 COBOL GL programs + JCL overhead (captured 2026-08-19 on the user's live TK5 system) | 95,172,887 (118 distinct opcodes) |
 
 Line format is hyperion's own `icount` output, sorted descending:
 `Inst 'hh' count N (p%) time T (avg) MNEMONIC template handler_name`.
@@ -40,6 +41,15 @@ counts for precision.
 - HERCASM: top 10 opcodes = 66.1%, top 20 = 82.1%, top 40 = 95.6%.
 - CPUMIX: top 10 = 85.0%, top 20 = 99.2%, top 40 = 99.8%; the six
   decimal ops (ZAP, AP, MP, CP, MVO, DP) total 39.5%.
+- BATCH (real production month-end run): top 10 = 67.4%, top 20 =
+  80.6%, top 40 = 94.2% — and the **decimal family is only 0.2%**.
+  The real commercial batch mix looks like the compiler mix (BC 21.7%,
+  L 14.4%, TM/LR/ST/LA/SLR/BCR/LTR/LM), not like the synthetic
+  decimal loop: SORT passes, record handling, and OS/JES overhead
+  dwarf the per-record arithmetic. Implication for any JIT: the same
+  ~40-opcode inline set covers all three workloads, and decimal
+  handlers can stay interpreter/helper calls at no measurable cost.
 - Rate for scale (counting off): session maxrates peak 82 MIPS; the
   CPUMIX job ≈ 42 MIPS effective over its 9 s wall clock including
-  compile/link I/O.
+  compile/link I/O. BATCH runs ~3 s wall instrumented or not — it is
+  not CPU-bound at these volumes.
