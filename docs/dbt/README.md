@@ -1,5 +1,12 @@
 # DBT for Hercules — feasibility study
 
+> **The project is now live.** Development happens in the hyperion fork
+> at **https://github.com/brazilofmux/hyperion** (branch `dbt`, docs
+> under `dbt/`), starting with the lockstep verifier
+> (`dbt/DESIGN-VERIFIER.md`). This directory remains as the frozen
+> feasibility study referenced by the 2026-08 hercules-390 list post;
+> the data in `data/` is canonical in both places.
+
 **Date:** 2026-08-19. Survey of SDL-Hercules-390/hyperion internals plus the four
 in-house DBT projects (`~/riscv`, `~/z80`, `~/vcc`, `~/slow-32`), asking: can the
 same dynamic-binary-translation techniques be applied to Hercules?
