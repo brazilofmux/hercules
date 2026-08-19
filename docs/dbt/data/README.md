@@ -49,6 +49,11 @@ counts for precision.
   dwarf the per-record arithmetic. Implication for any JIT: the same
   ~40-opcode inline set covers all three workloads, and decimal
   handlers can stay interpreter/helper calls at no measurable cost.
+  Caveat: this application deliberately avoids packed decimal by
+  design (binary linear-day date math in assembler, per Calendrical
+  Calculations, epoch 1601). Typical commercial COBOL is far more
+  COMP-3-heavy; treat CPUMIX (39.5% decimal) and BATCH (0.2%) as
+  brackets on the range, not either one as "typical."
 - Rate for scale (counting off): session maxrates peak 82 MIPS; the
   CPUMIX job ≈ 42 MIPS effective over its 9 s wall clock including
   compile/link I/O. BATCH runs ~3 s wall instrumented or not — it is
