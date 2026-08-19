@@ -3,6 +3,12 @@
 Four in-house DBT codebases surveyed 2026-08-19. Ordered by relevance of their
 *architecture* to a Hercules DBT, not by BIPS.
 
+Three are public — [riscv](https://github.com/brazilofmux/riscv),
+[z80](https://github.com/brazilofmux/z80), [VCC](https://github.com/brazilofmux/VCC)
+— and file references for those can be checked against their trees as of the
+survey date. slow-32 is not currently public; its references here are internal
+notes until that changes.
+
 Cross-cutting note on the shared encoder: `emit_a64.h` has traveled
 riscv → z80 → vcc. **Take VCC's copy** — it fixes a shift-by-32 UB bug in the
 logical-immediate encoder (`a64_encode_logical_imm32` when `r==0`) that, per
